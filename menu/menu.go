@@ -12,6 +12,7 @@ import (
 )
 
 
+
 func cleanScreen(){
 	c := exec.Command("clear")
 	c.Stdout = os.Stdout
@@ -43,9 +44,7 @@ func run(board *model.Board,player *model.Player) (){
 	for i:= range board.Elements{
 		fmt.Print(strconv.Itoa(i+1) +" ")
 		for j:=range board.Elements[i]{
-
 			if(!board.Elements[i][j].Visited){
-				//fmt.Print(" "+strconv.Itoa(i)+","+strconv.Itoa(j)+" ")
 				fmt.Print( " ? ")
 			}else{
 				fmt.Print( " "+board.Elements[i][j].Value+" ")
@@ -73,20 +72,24 @@ func findPair(player *model.Player,board *model.Board) {
 	column2 = askForColumn()
 	var cell2 *model.Cell=checkValue(row2,column2,board)
 
-	if(cell1.Value == cell2.Value){
+	if(row==row2 && column==column2){
+		fmt.Println("You're a cheater! Don't choice the same cell twice");
+		player.Score-=10
+	}else if(cell1.Visited || cell2.Visited) {
+		fmt.Println("You're a cheater! Don't choice the same cell twice");
+		player.Score -= 20
+	}else if(cell1.Value == cell2.Value){
 		player.Score+=10
 	}
-
 	cell1.Visited = true
 	cell2.Visited = true
-	fmt.Println(cell1.Value+ " and "+cell2.Value)
 }
 
 
 
 func askForRow() int{
 	fmt.Print("Row: ")
-	var value,valid =utils.CheckOption(1,10)
+	var value,valid =utils.CheckOption(1,model.Width)
 	if(!valid){
 		askForRow()
 	}
@@ -95,7 +98,7 @@ func askForRow() int{
 
 func askForColumn() int{
 	fmt.Print("Column: ")
-	var value,valid =utils.CheckOption(1,7)
+	var value,valid =utils.CheckOption(1,model.Height)
 	if(!valid){
 		askForColumn()
 	}
@@ -103,5 +106,5 @@ func askForColumn() int{
 }
 
 func checkValue(row int,column int, board *model.Board) *model.Cell{
-	return &board.Elements[column-1][row-1]
+	return &board.Elements[row-1][column-1]
 }
