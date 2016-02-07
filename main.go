@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/wesovi/findThePairs/menu"
+	"github.com/wesovi/findThePairs/game"
 	"github.com/wesovi/findThePairs/utils"
 )
 
@@ -11,7 +11,6 @@ func main(){
 	if(!valid){
 		fmt.Println("See you when using a real os, XDD")
 	}else{
-		menu.LaunchGame()
+		game.LaunchGame()
 	}
-
 }
