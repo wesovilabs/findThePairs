@@ -31,7 +31,8 @@ func run(board *model.Board,player *model.Player){
 	shouldContinuePlaying:= true
 	for shouldContinuePlaying {
 		display(player,board)
-		shouldContinuePlaying = findPair(player,board)
+		findPair(player,board)
+		shouldContinuePlaying = player.Tries < model.Width * model.Height /2
 	}
 }
 
@@ -65,6 +66,7 @@ func updatePlayerStatus(player *model.Player,points int){
 }
 
 func checkIfChosenCellsAreValid(cell1,cell2 *model.Cell)(bool,int){
+
 	if(cell1.Value == cell2.Value){
 		return true,10;
 	}else{
@@ -83,7 +85,10 @@ func findPair(player *model.Player,board *model.Board)(bool) {
 		fmt.Println("Please don't try cheating me... and don't selec twice the same cell.")
 		cell2 = getCell(board)
 	}
+
 	var _,points =checkIfChosenCellsAreValid(cell1,cell2)
+	board.Items[cell1.Value].Perms--
+	board.Items[cell2.Value].Perms--
 	updatePlayerStatus(player,points)
 	updateCellStatus(cell1,cell2)
 	return true

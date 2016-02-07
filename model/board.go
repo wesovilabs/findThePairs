@@ -4,12 +4,16 @@ import(
 	"math/rand"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 const(
 	Width			= 6
 	Height			= 6
+
 )
+
+var PossibleElements		= []string{"A","B","C"}
 
 type Item struct {
 	Value  			string
@@ -25,18 +29,25 @@ func NewItem(value string) *Item{
 
 type Board struct {
 	Elements 	[Height][Width]Cell
-	Items 		[]*Item
+	Items 		map[string]*Item
 }
 
 
+func initializeBoard(board *Board){
+	board.Items = make(map[string]*Item)
+	for _,element:= range PossibleElements {
+		board.Items[element] = NewItem(element)
+	}
+}
+
 func NewBoard() *Board{
-	random := rand.New(rand.NewSource(99))
+	rand.Seed( time.Now().UTC().UnixNano())
 	var board = new (Board)
-	board.Items = []*Item{NewItem("X"),NewItem("O")}
+	initializeBoard(board)
 	for i:= range board.Elements {
 		for j:= range board.Elements[i] {
-			var randomPosition = random.Intn(len(board.Items))
-			var item *Item = board.Items[randomPosition]
+			var randomPosition = rand.Intn(len(board.Items))
+			var item *Item = board.Items[PossibleElements[randomPosition]]
 			board.Elements[i][j].Value = item.Value
 			item.Perms+=1
 			board.Elements[i][j].Row = i
@@ -54,8 +65,9 @@ type Cell struct {
 }
 
 func DisplayPendingItems(board *Board){
-	for i:= range board.Items{
-		fmt.Println((board.Items[i]).Value+": "+strconv.Itoa(board.Items[i].Perms))
+	fmt.Println("Hidden letters:")
+	for _,option:= range PossibleElements{
+		fmt.Println(" - "+(board.Items[option]).Value+": "+strconv.Itoa(board.Items[option].Perms))
 	}
 }
 

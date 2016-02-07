@@ -26,5 +26,5 @@ func makePlayer(fullName string) Player{
 }
 
 func DisplayPlayer(player *Player){
-	fmt.Println(" "+player.FullName+" has "+strconv.Itoa(player.Score)+" points and has already spent "+strconv.Itoa(player.Tries)+" tries.")
+	fmt.Println(" "+player.FullName+" has "+strconv.Itoa(player.Score)+" points and has already spent "+strconv.Itoa(player.Tries)+" tries of "+strconv.Itoa(Width * Height /2))
 }
