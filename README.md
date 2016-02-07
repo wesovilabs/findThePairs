@@ -12,6 +12,8 @@ Game that whose rules are the below
 
 ![Alt text](./resources/img1.png?raw=true "Gameboard status")
 
+![Alt text](./resources/img2.png?raw=true "Gameboard status")
+
 
 ## Motivation
 
